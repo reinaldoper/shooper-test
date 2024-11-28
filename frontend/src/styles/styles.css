@@ -1,0 +1,42 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+h1 {
+  text-align: center;
+}
+
+.request-ride, .ride-options, .ride-history {
+  max-width: 600px;
+  margin: auto;
+  padding: 20px;
+}
+
+input[type="text"] {
+  width: calc(100% - 20px);
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+button {
+  padding: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+.ride-option {
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 10px;
+}
+
+.ride-history .ride {
+  border-bottom: 1px solid #ccc;
+}
