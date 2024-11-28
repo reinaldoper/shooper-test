@@ -16,3 +16,12 @@ export const registerDriver = async (req: Request, res: Response): Promise<Respo
         return res.status(500).json({ error: 'Erro ao cadastrar motorista.' });
     }
 };
+
+export const getDrivers = async (req: Request, res: Response): Promise<Response> => {
+    try {
+        const drivers = await Driver.findAll(); 
+        return res.status(200).json(drivers);
+    } catch (error) {
+        return res.status(500).json({ error: 'Erro ao buscar motoristas.' });
+    }
+};
