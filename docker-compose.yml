@@ -15,13 +15,17 @@ services:
     depends_on:
       - db
   frontend:
-    build: ./frontend
+    build: 
+      context: ./frontend
+      dockerfile: Dockerfile
     ports:
       - "80:80"
     environment:
       - GOOGLE_API_KEY=${GOOGLE_API_KEY}
     volumes:
       - ./frontend:/app
+    depends_on:
+      - backend
   db:
     image: postgres
     restart: always
