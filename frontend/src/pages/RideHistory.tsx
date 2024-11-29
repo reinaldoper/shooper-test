@@ -14,7 +14,7 @@ const RideHistory: React.FC = () => {
 
     try {
 
-      const response = await axios.get(`http://backend:8080/ride/${customerId}`, {
+      const response = await axios.get(`http://localhost:8080/ride/${customerId}`, {
         params: { driver_id: driverId }
       });
       setRides(response.data.rides);
@@ -33,7 +33,7 @@ const RideHistory: React.FC = () => {
 
   const fetchDrivers = async () => {
     try {
-      const response = await axios.get(`http://backend:8080/drivers`);
+      const response = await axios.get(`http://localhost:8080/drivers`);
       setDrivers(response.data);
     } catch (error) {
       console.error('Erro ao buscar motoristas:', error);

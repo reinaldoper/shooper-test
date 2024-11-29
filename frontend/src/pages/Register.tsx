@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import './styles/Register.css'; 
+import '../styles/Register.css'; 
 
 const Register: React.FC = () => {
     const [name, setName] = useState<string>('');
@@ -16,11 +16,13 @@ const Register: React.FC = () => {
         setError('');
 
         try {
-            const response = await axios.post('http://backend:8080/user/register', {
+            const response = await axios.post('http://localhost:8080/user/register', {
                 name,
                 email,
                 password,
             });
+            console.log(response.data);
+            
             if (response.data.message) {
                 alert(response.data.message);
                 navigate('/');

@@ -1,3 +1,4 @@
+
 import { QueryInterface, DataTypes } from 'sequelize';
 
 export default {
@@ -39,25 +40,9 @@ export default {
         defaultValue: new Date(),
       },
     });
-
-    
-    await queryInterface.addConstraint('Rides', {
-      fields: ['driver_id'],
-      type: 'foreign key',
-      references: {
-        table: 'Drivers',
-        field: 'id',
-      },
-      onDelete: 'SET NULL', 
-      onUpdate: 'CASCADE', 
-    });
   },
 
   async down(queryInterface: QueryInterface): Promise<void> {
-    
-    await queryInterface.removeConstraint('Rides', 'fk_rides_driver_id');
-    
-    
     await queryInterface.dropTable('Drivers');
   }
 };

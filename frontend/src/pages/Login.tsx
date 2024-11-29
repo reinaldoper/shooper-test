@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import './styles/Login.css'; 
+import '../styles/Login.css'; 
 
 const Login: React.FC = () => {
     const [email, setEmail] = useState<string>('');
@@ -15,7 +15,7 @@ const Login: React.FC = () => {
         setError('');
 
         try {
-            const response = await axios.post('http://backend:8080/user/login', {
+            const response = await axios.post('http://localhost:8080/user/login', {
                 email,
                 password,
             });
@@ -46,6 +46,15 @@ const Login: React.FC = () => {
                 {error && <p className="error-message">{error}</p>}
                 <button type="submit">Login</button>
             </form>
+            <p>
+                Ainda não tem uma conta? 
+                <span 
+                    style={{ cursor: 'pointer', color: '#007bff' }} 
+                    onClick={() => navigate('/register')}
+                >
+                    Registre aqui.
+                </span>
+            </p>
         </div>
     );
 };

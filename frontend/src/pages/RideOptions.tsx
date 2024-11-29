@@ -4,10 +4,17 @@ import '../styles/styles.css';
 import axios from 'axios';
 import { LocationState } from '../utils/LocationState';
 
+
 const RideOptions: React.FC = () => {
   const navigate = useNavigate();
 
+  
   const rideOptions: LocationState['rideOptions'] = JSON.parse(localStorage.getItem('rideOptions') || '{}');
+
+ 
+  if (!rideOptions || !rideOptions.customer_id) {
+    return <div>Opções de viagem não disponíveis.</div>;
+  }
 
   const handleConfirmRide = async (driverId: number) => {
     if (!rideOptions || !rideOptions.customer_id) {
@@ -16,7 +23,7 @@ const RideOptions: React.FC = () => {
     }
 
     try {
-      const response = await axios.patch('http://backend:8080/ride/confirm', {
+      const response = await axios.patch('http://localhost:8080/ride/confirm', {
         customer_id: rideOptions.customer_id,
         origin: rideOptions.origin,
         destination: rideOptions.destination,
@@ -25,6 +32,7 @@ const RideOptions: React.FC = () => {
         driver: { id: driverId },
         value: rideOptions.options.find(option => option.id === driverId)?.value,
       });
+
       if (response.data.success) {
         alert('Viagem confirmada com sucesso!');
         navigate('/history');
@@ -46,16 +54,20 @@ const RideOptions: React.FC = () => {
     <div className="ride-options">
       <h1>Opções de Viagem</h1>
       <div>
-        {rideOptions.options?.map(option => (
-          <div key={option.id} className="ride-option">
-            <h2>{option.name}</h2>
-            <p>{option.description}</p>
-            <p>Veículo: {option.vehicle}</p>
-            <p>Avaliação: {option.review.rating}</p>
-            <p>Valor da Viagem: R$ {option.value.toFixed(2)}</p>
-            <button onClick={() => handleConfirmRide(option.id)}>Escolher</button>
-          </div>
-        ))}
+        {rideOptions.options && rideOptions.options.length > 0 ? (
+          rideOptions.options.map(option => (
+            <div key={option.id} className="ride-option">
+              <h2>{option.name}</h2>
+              <p>{option.description}</p>
+              <p>Veículo: {option.vehicle}</p>
+              <p>Avaliação: {option.review.rating}</p>
+              <p>Valor da Viagem: R$ {option.value.toFixed(2)}</p>
+              <button onClick={() => handleConfirmRide(option.id)}>Escolher</button>
+            </div>
+          ))
+        ) : (
+          <p>Nenhuma opção disponível.</p>
+        )}
       </div>
     </div>
   );

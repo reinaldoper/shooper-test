@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import './styles/RegisterDriver.css'; 
+import '../styles/RegisterDriver.css'; 
 
 const RegisterDriver: React.FC = () => {
     const [name, setName] = useState<string>('');
@@ -18,7 +18,7 @@ const RegisterDriver: React.FC = () => {
         setError('');
 
         try {
-            const response = await axios.post('http://backend:8080/driver', {
+            const response = await axios.post('http://localhost:8080/driver', {
                 name,
                 description,
                 vehicle,
