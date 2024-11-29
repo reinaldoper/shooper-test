@@ -54,6 +54,12 @@ const RideOptions: React.FC = () => {
     <div className="ride-options">
       <h1>Opções de Viagem</h1>
       <div>
+        <p>Origem: {rideOptions.origin.latitude}-{rideOptions.origin.longitude}</p>
+        <p>Destino: {rideOptions.destination.latitude}-{rideOptions.destination.longitude}</p>
+        <p>Distância: {rideOptions.distance}km</p>
+        <p>Duração: {rideOptions.duration}</p>
+      </div>
+      <div>
         {rideOptions.options && rideOptions.options.length > 0 ? (
           rideOptions.options.map(option => (
             <div key={option.id} className="ride-option">
@@ -66,7 +72,7 @@ const RideOptions: React.FC = () => {
             </div>
           ))
         ) : (
-          <p>Nenhuma opção disponível.</p>
+          <p>Nenhuma opção disponível de motorista.</p>
         )}
       </div>
     </div>
