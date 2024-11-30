@@ -25,3 +25,19 @@ export const getDrivers = async (req: Request, res: Response): Promise<Response>
         return res.status(500).json({ error: 'Erro ao buscar motoristas.' });
     }
 };
+
+export const getDriveById = async (req: Request, res: Response): Promise<Response> => {
+    const { id } = req.params;
+
+    try {
+        const driver = await Driver.findByPk(id);
+
+        if (!driver) {
+            return res.status(404).json({ error: 'Motorista não encontrado.' });
+        }
+
+        return res.status(200).json({ driver: driver });
+    } catch (error) {
+        return res.status(500).json({ error: 'Erro ao buscar motorista.' });
+    }
+};

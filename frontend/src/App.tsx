@@ -1,5 +1,5 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import RequestRide from './pages/RequestRide';
 import RideOptions from './pages/RideOptions';
 import RideHistory from './pages/RideHistory';
@@ -9,16 +9,26 @@ import RegisterDriver from './pages/RegisterDriver';
 import Navbar from './pages/Navbar';
 
 const App: React.FC = () => {
+    const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+
+    useEffect(() => {
+        
+        const token = localStorage.getItem('token') as string;
+        if (token) {
+        setIsAuthenticated(true);
+        }
+    }, []);
+
     return (
         <Router>
-            <Navbar />
+            {isAuthenticated && <Navbar />}
             <Routes>
-                <Route path="/" element={<Login />} />
+                <Route path="/" element={!isAuthenticated ? <Login /> : <Navigate to="/request" />} />
                 <Route path="/register" element={<Register />} />
-                <Route path="/request" element={<RequestRide />} />
-                <Route path="/options" element={<RideOptions />} />
-                <Route path="/history" element={<RideHistory />} />
-                <Route path="/register-driver" element={<RegisterDriver />} />
+                <Route path="/request" element={isAuthenticated ? <RequestRide /> : <Navigate to="/" />} />
+                <Route path="/options" element={isAuthenticated ? <RideOptions /> : <Navigate to="/" />} />
+                <Route path="/history" element={isAuthenticated ? <RideHistory /> : <Navigate to="/" />} />
+                <Route path="/register-driver" element={isAuthenticated ? <RegisterDriver /> : <Navigate to="/" />} />
             </Routes>
         </Router>
     );

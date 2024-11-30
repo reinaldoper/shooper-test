@@ -2,22 +2,18 @@ import React, { useState, useEffect } from 'react';
 import '../styles/styles.css';
 import axios from 'axios';
 import Ride from '../utils/Ride';
-import Driver from '../utils/Driver';
 
 const RideHistory: React.FC = () => {
   const [rides, setRides] = useState<Ride[]>([]);
-  const [drivers, setDrivers] = useState<Driver[]>([]);
-  const [selectedDriverId, setSelectedDriverId] = useState<string>('');
+  
 
-  const fetchRides = async (driverId?: string) => {
+  const fetchRides = async () => {
     const customerId = JSON.parse(localStorage.getItem('token') || '{}');
 
     try {
-
-      const response = await axios.get(`http://localhost:8080/ride/${customerId}`, {
-        params: { driver_id: driverId }
-      });
+      const response = await axios.get(`http://localhost:8080/ride/${customerId}`);
       setRides(response.data.rides);
+
     } catch (error) {
       if (axios.isAxiosError(error)) {
         if (error.response) {
@@ -31,48 +27,23 @@ const RideHistory: React.FC = () => {
     }
   };
 
-  const fetchDrivers = async () => {
-    try {
-      const response = await axios.get(`http://localhost:8080/drivers`);
-      setDrivers(response.data);
-    } catch (error) {
-      console.error('Erro ao buscar motoristas:', error);
-    }
-  };
 
   useEffect(() => {
-    fetchDrivers();
+    fetchRides();
   }, []);
 
-  useEffect(() => {
-    fetchRides(selectedDriverId);
-  }, [selectedDriverId]);
+  const formatDateToBrazilian = (date: Date) => {
+    return `${date.getDate().toString().padStart(2, '0')}/${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getFullYear()} ${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}:${date.getSeconds().toString().padStart(2, '0')}`;
+  };
 
   return (
     <div className="ride-history">
       <h1>Histórico de Viagens</h1>
 
-      <label htmlFor="driver-select">Selecione um Motorista:</label>
-      <select
-        id="driver-select"
-        value={selectedDriverId}
-        onChange={(e) => setSelectedDriverId(e.target.value)}
-      >
-        <option value="">-- Selecione um Motorista --</option>
-        {drivers.map((driver) => (
-          <option key={driver.id} value={driver.id}>
-            {driver.name}
-          </option>
-        ))}
-      </select>
-
       {rides.length > 0 ? (
         rides.map((ride) => (
           <div key={ride.id} className="ride">
-            <p>Data e Hora: {new Date(ride.date).toLocaleString()}</p>
-            <p>Motorista: {ride.driver.name}</p>
-            <p>Origem: {ride.origin}</p>
-            <p>Destino: {ride.destination}</p>
+            <p>Data e Hora: {formatDateToBrazilian(new Date(ride.createdAt))}</p>
             <p>Distância: {ride.distance} km</p>
             <p>Duração: {ride.duration}</p>
             <p>Valor: R$ {ride.value.toFixed(2)}</p>

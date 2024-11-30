@@ -11,6 +11,13 @@ h1 {
   text-align: center;
   color: #333; 
 }
+
+.ride {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+}
+
 .ride-history {
   max-width: 800px; 
   margin: auto; 

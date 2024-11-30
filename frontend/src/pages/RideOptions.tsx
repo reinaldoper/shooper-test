@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import '../styles/styles.css';
 import axios from 'axios';
 import { LocationState } from '../utils/LocationState';
-import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
+import { GoogleMap, LoadScript, MarkerF } from '@react-google-maps/api';
 
 const RideOptions: React.FC = () => {
   const navigate = useNavigate();
@@ -21,13 +21,13 @@ const RideOptions: React.FC = () => {
     }
 
     try {
-      const response = await axios.patch('http://backend:8080/ride/confirm', {
+      const response = await axios.patch('http://localhost:8080/ride/confirm', {
         customer_id: rideOptions.customer_id,
-        origin: rideOptions.origin,
-        destination: rideOptions.destination,
+        origin: `${rideOptions.origin.latitude},${rideOptions.origin.longitude}`,
+        destination: `${rideOptions.destination.latitude},${rideOptions.destination.longitude}`,
         distance: rideOptions.distance,
         duration: rideOptions.duration,
-        driver: { id: driverId },
+        driver_id: driverId,
         value: rideOptions.options.find(option => option.id === driverId)?.value,
       });
 
@@ -48,7 +48,6 @@ const RideOptions: React.FC = () => {
     }
   };
 
-
   const origin = { lat: rideOptions.origin.latitude, lng: rideOptions.origin.longitude };
   const destination = { lat: rideOptions.destination.latitude, lng: rideOptions.destination.longitude };
 
@@ -62,16 +61,18 @@ const RideOptions: React.FC = () => {
         <p>Duração: {rideOptions.duration}</p>
       </div>
 
-
       <LoadScript googleMapsApiKey={import.meta.env.GOOGLE_API_KEY || ''}>
         <GoogleMap
           mapContainerStyle={{ height: "400px", width: "100%" }}
           center={origin}
           zoom={10}
+          options={{
+            disableDefaultUI: true,
+            zoomControl: true 
+          }}
         >
-
-          <Marker position={origin} label="Origem" />
-          <Marker position={destination} label="Destino" />
+          <MarkerF position={origin} label="Origem" />
+          <MarkerF position={destination} label="Destino" />
         </GoogleMap>
       </LoadScript>
 
