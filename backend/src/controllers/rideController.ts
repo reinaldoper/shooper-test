@@ -62,7 +62,7 @@ export const estimateRide = async (req: Request, res: Response): Promise<Respons
 export const confirmRide = async (req: Request, res: Response): Promise<Response> => {
   const { customer_id, origin, destination, distance, duration, driver_id, value } = req.body;
 
-  if (!customer_id || !origin || !destination || /* origin === destination || */ !driver_id || distance <= 0) {
+  if (!customer_id || !origin || !destination || origin === destination || !driver_id || distance <= 0) {
     return res.status(400).json({ error_code: "INVALID_DATA", error_description: "Dados inválidos." });
   }
 
