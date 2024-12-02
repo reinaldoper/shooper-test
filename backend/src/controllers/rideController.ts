@@ -77,7 +77,6 @@ export const confirmRide = async (req: Request, res: Response): Promise<Response
     return res.status(404).json({ error_code: "DRIVER_NOT_FOUND", error_description: "Motorista não encontrado." });
   }
 
-
   await Ride.create({
     customer_id,
     origin,
@@ -97,6 +96,13 @@ export const getRides = async (req: Request, res: Response): Promise<Response> =
 
   if (!customer_id) {
     return res.status(400).json({ error_code: "INVALID_DRIVER", error_description: "ID do cliente é obrigatório." });
+  }
+
+  if (driver_id) {
+    const driverExists = await Driver.findByPk(driver_id as string);
+    if (!driverExists) {
+      return res.status(400).json({ error_code: "INVALID_DRIVER", error_description: "Motorista inválido." });
+    }
   }
 
   let rides: string | any[];
