@@ -10,10 +10,11 @@ dotenv.config();
 
 export const estimateRide = async (req: Request, res: Response): Promise<Response> => {
   const { customer_id, origin, destination } = req.body;
-  console.log(req.body);
   
+  const originParts = origin.trim();
+  const destinationParts = destination.trim();
 
-  if (!customer_id || !origin || !destination || origin === destination) {
+  if (!customer_id || !origin || !destination || originParts === destinationParts) {
     return res.status(400).json({ error_code: "INVALID_DATA", error_description: "Dados inválidos." });
   }
 
