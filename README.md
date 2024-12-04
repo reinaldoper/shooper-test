@@ -1,77 +1,79 @@
 # Aplicação de Transporte Particular
 
-Esta é uma aplicação de transporte particular desenvolvida como parte de um teste técnico para a Shopper.com.br. O sistema permite que usuários solicitem viagens de um ponto A a um ponto B, escolham entre motoristas disponíveis e confirmem suas viagens.
-
-## Estrutura do Projeto
-
-O projeto é dividido em duas partes principais:
-
-- **Backend**: API REST em Node.js com TypeScript.
-- **Frontend**: Interface do usuário (a ser implementada).
+Esta aplicação permite que os usuários solicitem viagens em carros particulares, escolham entre diferentes motoristas e visualizem o histórico de viagens. A aplicação utiliza a API do Google Maps para calcular rotas e estimativas de viagem.
 
 ## Tecnologias Utilizadas
 
-- Node.js
-- TypeScript
-- Express
-- Sequelize (ORM)
-- Axios (para chamadas HTTP)
-- Google Maps API
-- Docker
+- **Frontend**: React, TypeScript, @react-google-maps/api
+- **Backend**: Node.js, Express, TypeScript
+- **Banco de Dados**: PostgreSQL
+- **API do Google Maps**: Para cálculo de rotas e estimativas de distância.
 
-## Configuração do Backend
+## Instalação
 
 ### Pré-requisitos
 
-Antes de executar o projeto, certifique-se de ter o seguinte instalado:
-
 - Node.js
-- Docker e Docker Compose
+- npm ou yarn
+- Docker (opcional, mas recomendado para execução em contêineres)
 
-### Instalação
+### Configuração do Ambiente
 
 1. Clone o repositório:
-
    ```bash
    git clone <URL_DO_REPOSITORIO>
-   cd <NOME_DA_PASTA>
+   cd <NOME_DO_REPOSITORIO>
    ```
 
-2. Instale as dependências:
-
-   ```bash
-   npm install
-   ```
-
-3. Para construir e executar a aplicação usando Docker, execute:
-   
+2. Para executar a aplicação usando Docker, utilize o seguinte comando:
    ```bash
    docker-compose up
    ```
 
-## Endpoints da API
+## Backend
 
-### A API possui os seguintes endpoints:
+### O backend é uma API REST que fornece os seguintes endpoints:
 1. POST /ride/estimate
-Responsável por receber a origem e o destino da viagem e realizar os cálculos dos valores da viagem.
-Validações:
-- Os endereços de origem e destino não podem estar em branco.
-- O ID do usuário não pode estar em branco.
-- Os endereços de origem e destino não podem ser o mesmo endereço.
-Retorno:
-- Latitude e longitude dos pontos iniciais e finais.
-- Distância e tempo do percurso.
-- Opções de motoristas disponíveis com seus respectivos valores.
-
+- Recebe a origem e o destino da viagem.
+- Valida se os endereços não estão em branco e se são diferentes.
+- Utiliza a API do Google Maps para calcular a rota e a distância entre os pontos.
+- Retorna as opções de motoristas disponíveis com seus respectivos valores.
 2. PATCH /ride/confirm
-- Confirma uma corrida com os detalhes fornecidos.
-Requisitos:
-- Recebe os dados da corrida, incluindo customer_id, origin, destination, distance, duration, driver_id e value.
-Retorno:
-- Confirmação da criação da corrida.
-3. GET /ride/:customer_id
-- Recupera o histórico de corridas para um cliente específico.
-Parâmetros:
-- customer_id: ID do cliente cujas corridas devem ser retornadas.
-Retorno:
-- Lista das corridas realizadas pelo cliente.
+- Confirma uma viagem com base no motorista selecionado.
+- Atualiza o status da viagem no banco de dados.
+3. GET /driver/:id
+- Retorna informações sobre um motorista específico.
+
+## Uso da API do Google Maps
+1. No Frontend
+- A API do Google Maps é utilizada para exibir um mapa interativo onde os usuários podem visualizar a origem e o destino da viagem. Os marcadores são colocados nos pontos corretos usando Marker ou AdvancedMarkerElement conforme necessário.
+2. No Backend
+- A API do Google Maps é utilizada para calcular rotas entre a origem e o destino fornecidos pelo usuário. Isso permite obter informações precisas sobre distância e tempo estimado para a viagem.
+3. Contribuição
+- Contribuições são bem-vindas! Sinta-se à vontade para abrir issues ou pull requests.
+
+
+## Rotas do Frontend
+
+```bash
+<Router>
+    <Routes>
+        <Route path="/" element={!isAuthenticated ? <Login /> : <Navigate to="/request" />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/request" element={isAuthenticated ? <RequestRide /> : <Navigate to="/" />} />
+        <Route path="/options" element={isAuthenticated ? <RideOptions /> : <Navigate to="/" />} />
+        <Route path="/history" element={isAuthenticated ? <RideHistory /> : <Navigate to="/" />} />
+        <Route path="/register-driver" element={isAuthenticated ? <RegisterDriver /> : <Navigate to="/" />} />
+    </Routes>
+</Router>
+```
+
+
+### Considerações Finais
+
+- **Substitua `<URL_DO_REPOSITORIO>`** pelo link real do seu repositório.
+- **Adicione informações sobre o banco de dados utilizado**, se aplicável.
+- **Verifique se todos os detalhes estão corretos** e se refletem sua implementação atual.
+- **Adicione mais informações conforme necessário**, como instruções específicas para executar testes ou outras funcionalidades.
+
+Se você precisar de mais ajustes ou detalhes específicos, sinta-se à vontade para perguntar!
