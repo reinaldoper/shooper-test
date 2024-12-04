@@ -72,6 +72,7 @@ Esta aplicação permite que os usuários solicitem viagens em carros particular
 ### Considerações Finais
 
 - **Substitua `<URL_DO_REPOSITORIO>`** pelo link real do seu repositório.
+- **Substitua `<GOOGLE_API_KEY>`** no docker compose pela sua chave do **GOOGLE**
 - **Adicione informações sobre o banco de dados utilizado**, se aplicável.
 - **Verifique se todos os detalhes estão corretos** e se refletem sua implementação atual.
 - **Adicione mais informações conforme necessário**, como instruções específicas para executar testes ou outras funcionalidades.
